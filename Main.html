@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="">
+<head>
+    <title></title>
+    <meta charset='utf-8'  content=""/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div style = "height: 2000px; background-color: rgb(221, 213, 213);">
+    <div style = "width:fit-content; height: 2000px; margin: auto; background-color: rgb(255, 255, 255);">
+        <canvas id="myCanvas" width="1500" height="1500" style="margin:60px"></canvas>
+        <div class="input-group input-group-lg" style="margin:60px">
+            <h1 style="margin-right:15px">f(x) =</h1>
+            <label for="value"></label><input type="text" id = "value" style="font-size: 30px;">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" onclick="OK()">OK</button>
+            </div>
+        </div>
+
+        <div class="input-group input-group-lg" style="margin:60px">
+            <h1 style="margin-right:15px">Масштаб:</h1>
+            <label for="scale"></label><input type="number" id = "scale" value = '50' oninput = "sc = value" style = "font-size: 30px; width:331px;">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function DrawBg()
+    {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.font = "40px serif";
+        ctx.fillStyle = "black";
+        ctx.fillText('f(x)', 680, 40);
+        ctx.fillText('x', 1460, 740);
+        ctx.beginPath();
+        ctx.strokeStyle = 'gray';
+        ctx.lineWidth = 0.4;
+        for(let i = 0; i <= 1500; i = i+10)
+        {
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, 1500);
+        }
+        for(let i = 0; i <= 1500; i = i+10)
+        {
+            ctx.moveTo(0, i);
+            ctx.lineTo(1500, i);
+        }
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'black';
+        ctx.moveTo(750, 0);
+        ctx.lineTo(750, 1500);
+        ctx.moveTo(1500, 750);
+        ctx.lineTo(0, 750);
+        ctx.stroke();
+    };
+    function reverse(a)
+    {
+        return 1500-a;
+    };
+    function sqrt(a)
+    {
+        return Math.sqrt(a)
+    };
+    function sin(a)
+    {
+        return Math.sin(a)
+    };
+    function cos(a)
+    {
+        return Math.cos(a)
+    };
+    function abs(a)
+    {
+        return Math.abs(a)
+    };
+    function log(a)
+    {
+        return Math.log(a);
+    }
+
+    function measurement()
+    {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        let sc = document.getElementById('scale').value;
+        if(sc <= 35)
+        {
+            ctx.font = "15px serif";
+            ctx.fillStyle = "rgba(100,150,185,0)";
+        }
+        else
+        {
+            ctx.font = "20px serif";
+            ctx.fillStyle = "black";
+        }
+        let scale = document.getElementById('scale').value;
+        let i = 0;
+        ctx.beginPath()
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'black';
+        ctx.fillText('0', 755, 770);
+        let k = 0;
+        for (let i = 0; i <= 750; i += Number(scale))
+        {
+            ctx.moveTo(750+i, 745);
+            ctx.lineTo(750+i, 755);
+            if (i != 0)
+            {
+                ctx.fillText(k, 750+i, 770);
+            }
+            k += 1;
+        }
+        k = 0;
+        for (let i = 750; i >= 0; i -= Number(scale))
+        {
+            ctx.moveTo(i, 745);
+            ctx.lineTo(i, 755);
+            if (i != 750)
+            {
+                ctx.fillText(-k, i, 770);
+            }
+            k += 1;
+        }
+        k = 0;
+        for (let i = 0; i <= 750; i += Number(scale))
+        {
+            ctx.moveTo(745, 750+i);
+            ctx.lineTo(755, 750+i);
+            if (i != 0)
+            {
+                ctx.fillText(-k, 760, 750+i);
+            }
+            k += 1;
+        }
+        k = 0;
+        for (let i = 750; i >= 0; i -= Number(scale))
+        {
+            ctx.moveTo(745, i);
+            ctx.lineTo(755, i);
+            if (i != 750)
+            {
+                ctx.fillText(k,760, i);
+            }
+            k += 1;
+        }
+        ctx.stroke();
+    }
+    DrawBg();
+    measurement();
+    function OK()
+    {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, 1500, 1500);
+        DrawBg();
+        measurement();
+        ctx.beginPath()
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'black';
+        let sc = document.getElementById('scale').value;
+        for(let i = -750; i <= 750; i++)
+        {
+            let x = 1/sc*i;
+            let str = document.getElementById('value').value;
+            ctx.lineTo(750+sc*x, reverse(750+sc*eval(str)))
+        }
+        ctx.stroke();
+    }
+</script>
+</body>
